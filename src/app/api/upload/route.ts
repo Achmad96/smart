@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,23 +22,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
-
     // Generate unique filename
     const timestamp = Date.now();
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
     const filename = `${timestamp}_${sanitizedName}`;
-    const filepath = path.join(uploadsDir, filename);
 
-    // Write file
+    // Initialize Supabase Client
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error("Missing Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY)");
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Read file bytes
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    await writeFile(filepath, buffer);
+
+    // Upload to Supabase Storage bucket named 'uploads'
+    const { error } = await supabase.storage
+      .from("uploads")
+      .upload(filename, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
+
+    if (error) {
+      console.error("Supabase storage upload error:", error);
+      throw error;
+    }
+
+    // Get the public URL for the uploaded file
+    const { data: publicUrlData } = supabase.storage
+      .from("uploads")
+      .getPublicUrl(filename);
 
     return NextResponse.json({
-      url: `/uploads/${filename}`,
+      url: publicUrlData.publicUrl,
       name: file.name,
       size: file.size,
     });

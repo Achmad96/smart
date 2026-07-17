@@ -19,6 +19,7 @@
   "dependencies": {
     "@cyntler/react-doc-viewer": "^1.17.1",
     "@prisma/client": "^6.19.3",
+    "@supabase/supabase-js": "^2.110.7",
     "clsx": "^2.1.1",
     "docx": "^9.7.1",
     "docx-preview": "^0.4.0",
