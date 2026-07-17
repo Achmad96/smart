@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SMART (Sumbermalang Administrasi Terpadu)
+
+SMART is a professional correspondence management system tailored for the administration of Desa Sumbermalang. It serves as an integrated digital platform for official correspondence and public services, ensuring fast, efficient, transparent, and seamless administrative governance for the community.
+
+## Key Features
+
+- **Correspondence Management**: Create, track, and manage official letters and documents efficiently.
+- **Template System**: Use customizable document templates (DOCX, PDF) with dynamic field populations.
+- **Recent Activity Tracking**: Monitor system usage and recent correspondence activities.
+- **Document Processing**: View, parse, and handle various document formats directly within the application.
+
+## Tech Stack
+
+This project is built with modern web technologies:
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (React 19)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Database / ORM**: [Prisma](https://www.prisma.io/)
+- **Document Processing**: `docx`, `pdf-lib`, `docxtemplater`, `mammoth`, `tesseract.js` (OCR), and `xlsx`
+- **Language**: TypeScript
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v20+ recommended)
+- npm, yarn, pnpm, or bun
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Achmad96/smart.git
+   cd smart
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. Set up the environment variables:
+   Copy `.env.example` to `.env` and configure your database connection and other variables.
 
-To learn more about Next.js, take a look at the following resources:
+4. Initialize the database:
+   ```bash
+   npm run db:push
+   npm run db:generate
+   ```
+   *(Optional)* Seed the database with initial data:
+   ```bash
+   npm run db:seed
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is private and intended for the internal administrative use of Desa Sumbermalang.
