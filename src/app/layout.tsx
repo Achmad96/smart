@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({ 
   weight: ["300", "400", "500", "600", "700"],
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body className="min-h-screen bg-slate-50 font-sans" suppressHydrationWarning>
+        <Toaster position="top-right" />
 
         <Sidebar />
 

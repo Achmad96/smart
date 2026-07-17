@@ -17,6 +17,7 @@ import { useWarnIfUnsavedChanges } from "@/hooks/useWarnIfUnsavedChanges";
 import ListEditor from "@/components/ui/ListEditor";
 import TableEditor from "@/components/ui/TableEditor";
 import { formatFieldValuesForDocx, buildSearchRegexStr } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 type Step = "upload" | "mark" | "fill" | "preview";
 
@@ -651,6 +652,7 @@ export default function AnalyzeDocumentClient({ categories }: { categories: any[
       });
 
       setIsSaved(true);
+      toast.success("Templat berhasil disimpan!");
       if (isTemplateMode) {
         router.push("/manage-templates");
       } else {
@@ -659,7 +661,7 @@ export default function AnalyzeDocumentClient({ categories }: { categories: any[
       router.refresh();
     } catch {
       setSaveError("Gagal menyimpan templat. Silakan coba lagi.");
-    } finally {
+      toast.error("Gagal menyimpan templat");
       setIsSaving(false);
     }
   };
@@ -703,11 +705,12 @@ export default function AnalyzeDocumentClient({ categories }: { categories: any[
       });
 
       setIsSaved(true);
+      toast.success("Surat berhasil disimpan!");
       router.push("/correspondence");
       router.refresh();
     } catch {
       setSaveError("Gagal menyimpan. Silakan coba lagi.");
-    } finally {
+      toast.error("Gagal menyimpan surat");
       setIsSaving(false);
     }
   };

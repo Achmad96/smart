@@ -19,6 +19,7 @@ import DocxViewerUrl from "@/components/ui/DocxViewerUrl";
 import { useWarnIfUnsavedChanges } from "@/hooks/useWarnIfUnsavedChanges";
 import ListEditor from "@/components/ui/ListEditor";
 import TableEditor from "@/components/ui/TableEditor";
+import toast from "react-hot-toast";
 
 interface TemplateOption {
   id: string;
@@ -279,11 +280,12 @@ function NewCorrespondenceForm() {
       });
 
       setIsSaved(true);
+      toast.success("Surat berhasil dibuat!");
       router.push("/correspondence");
       router.refresh();
     } catch {
       setError("Gagal membuat surat");
-    } finally {
+      toast.error("Gagal membuat surat");
       setIsLoading(false);
     }
   };
