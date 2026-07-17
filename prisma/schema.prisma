@@ -3,20 +3,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Template {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  category    String   @default("general")
-  fields      Json     // Array of field definitions [{name, label, type, required, placeholder}]
-  content     String   @db.Text // Template body with {{placeholders}}
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  category       String   @default("general")
+  fields         Json     // Array of field definitions [{name, label, type, required, placeholder}]
+  content        String   // Template body with {{placeholders}}
+  headerImageUrl String?  // URL to letterhead/header image
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   correspondences Correspondence[]
 
@@ -29,12 +30,13 @@ model Correspondence {
   title            String
   templateId       String
   template         Template  @relation(fields: [templateId], references: [id])
+  nik              String?
   fieldValues      Json      // Filled values {fieldName: value}
-  renderedContent  String?   @db.Text // Final rendered content with placeholders replaced
+  renderedContent  String?   // Final rendered content with placeholders replaced
   uploadedFileUrl  String?   // Path to uploaded correspondence file
   uploadedFileName String?
   status           String    @default("draft") // draft | submitted | approved | rejected
-  adminNotes       String?   @db.Text
+  adminNotes       String?
   submittedAt      DateTime?
   reviewedAt       DateTime?
   createdAt        DateTime  @default(now())
@@ -42,5 +44,26 @@ model Correspondence {
 
   @@index([status])
   @@index([templateId])
+  @@index([createdAt])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  value     String   @unique
+  label     String
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  action      String   // "CREATE", "UPDATE", "DELETE"
+  entityType  String   // "CORRESPONDENCE", "TEMPLATE"
+  entityId    String
+  entityTitle String
+  description String
+  createdAt   DateTime @default(now())
+
   @@index([createdAt])
 }
