@@ -4,7 +4,6 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Link from "next/link";
 import { getCategoryColor } from "@/lib/utils";
-import { CATEGORIES } from "@/lib/constants";
 import type { TemplateField } from "@/types";
 import TemplateFilter from "./TemplateFilter";
 import SearchInput from "@/components/ui/SearchInput";

@@ -73,6 +73,6 @@ export async function fillPDFForm(file: File | ArrayBuffer, values: Record<strin
   form.flatten();
   
   const pdfBytes = await pdfDoc.save();
-  const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+  const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
   return URL.createObjectURL(blob);
 }

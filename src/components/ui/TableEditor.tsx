@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
@@ -16,20 +16,21 @@ export default function TableEditor({ value, onChange, label }: TableEditorProps
     ["Kolom 1", "Kolom 2"],
     ["", ""]
   ]);
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     try {
       if (value) {
         const parsed = JSON.parse(value);
         if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0])) {
           setGrid(parsed);
-          return;
         }
       }
     } catch {
       // Ignored
     }
-  }, [value]);
+  }
 
   const updateGrid = (newGrid: string[][]) => {
     setGrid(newGrid);

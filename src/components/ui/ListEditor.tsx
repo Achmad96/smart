@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
@@ -13,22 +13,23 @@ interface ListEditorProps {
 
 export default function ListEditor({ value, onChange, placeholder, label }: ListEditorProps) {
   const [items, setItems] = useState<string[]>([]);
+  const [prevValue, setPrevValue] = useState(value);
 
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     try {
       if (value) {
         const parsed = JSON.parse(value);
         if (Array.isArray(parsed)) {
           setItems(parsed);
-          return;
         }
+      } else {
+        setItems([]);
       }
     } catch {
-      // Ignored
+      if (!value) setItems([]);
     }
-    // If empty or invalid, keep items as is unless it's explicitly cleared
-    if (!value) setItems([]);
-  }, [value]);
+  }
 
   const updateItems = (newItems: string[]) => {
     setItems(newItems);

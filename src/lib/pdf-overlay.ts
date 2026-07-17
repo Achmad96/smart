@@ -1,4 +1,4 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts, PDFFont } from 'pdf-lib';
 
 
 export interface PDFTextItem {
@@ -41,8 +41,8 @@ export async function checkIfPdfIsEncrypted(file: File): Promise<boolean> {
   try {
     await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
     return false;
-  } catch (e: any) {
-    if (e.message?.toLowerCase().includes('encrypted')) {
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message?.toLowerCase().includes('encrypted')) {
       return true;
     }
     throw e;
@@ -238,7 +238,7 @@ export async function fillPDFOverlayAsBlob(file: File | ArrayBuffer, fields: PDF
     const value = values[field.name] || '';
     if (!value) continue; // Skip if no value provided
     
-    const coords = (field as any).coords || field;
+    const coords = ((field as PDFOverlayField & { coords?: PDFOverlayField }).coords) || field;
     const page = pages[coords.pageIndex];
     if (!page) continue;
     
@@ -306,7 +306,7 @@ export async function fillPDFOverlayAsBlob(file: File | ArrayBuffer, fields: PDF
   }
   
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes as any], { type: 'application/pdf' });
+  return new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
 }
 
 export async function fillPDFOverlay(file: File | ArrayBuffer, fields: PDFOverlayField[], values: Record<string, string>): Promise<string> {
@@ -326,7 +326,7 @@ export async function generateHighlightPDF(file: File | ArrayBuffer, fields: PDF
   const pages = pdfDoc.getPages();
   
   for (const field of fields) {
-    const coords = (field as any).coords || field;
+    const coords = ((field as PDFOverlayField & { coords?: PDFOverlayField }).coords) || field;
     const page = pages[coords.pageIndex];
     if (!page) continue;
     
@@ -358,11 +358,11 @@ export async function generateHighlightPDF(file: File | ArrayBuffer, fields: PDF
   }
   
   const pdfBytes = await pdfDoc.save();
-  const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+  const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
   return URL.createObjectURL(blob);
 }
 
-function getWrappedTextLines(text: string, font: any, size: number, maxWidth: number): number {
+function getWrappedTextLines(text: string, font: PDFFont, size: number, maxWidth: number): number {
   const lines = text.split('\n');
   let totalLines = 0;
   for (const line of lines) {

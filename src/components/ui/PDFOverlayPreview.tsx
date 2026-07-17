@@ -37,7 +37,7 @@ export default function PDFOverlayPreview({ fileUrl, fields, fieldValues, onPdfU
         } else {
           URL.revokeObjectURL(url);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (isMounted) {
           console.error(err);
           setError('Failed to generate PDF preview.');

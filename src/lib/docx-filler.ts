@@ -1,7 +1,7 @@
 import PizZip from "pizzip";
 import { buildSearchRegexStr } from "./utils";
 
-export function fillDocx(arrayBuffer: ArrayBuffer, fields: any[], fieldValues: Record<string, string>): Blob {
+export function fillDocx(arrayBuffer: ArrayBuffer, fields: { name: string; valueText?: string; occurrenceIndex?: number }[], fieldValues: Record<string, string>): Blob {
   const zip = new PizZip(arrayBuffer);
   
   // Find all document, header, and footer XML files

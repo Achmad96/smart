@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 import type { TemplateField } from "@/types";
 import { logActivity } from "./activity.actions";
 
@@ -32,9 +32,13 @@ export async function getTemplates(category?: string, options?: { page?: number;
   };
 }
 
-export async function getTemplateById(id: string) {
-  return prisma.template.findUnique({ where: { id } });
-}
+export const getTemplateById = unstable_cache(
+  async (id: string) => {
+    return prisma.template.findUnique({ where: { id } });
+  },
+  ["template-by-id"],
+  { tags: ["templates"] }
+);
 
 export async function createTemplate(data: {
   name: string;

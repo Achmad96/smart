@@ -119,10 +119,6 @@ export default function DocxViewer({ arrayBuffer, fields = [], fieldValues = {},
           if (!shouldReplace) return;
 
           const displayVal = val || f.valueText;
-          let spanClass = "";
-          if (highlightUnfilled && !val) {
-            spanClass = "bg-primary-500/30 text-primary-900 border-primary-500/50 rounded px-1 border border-transparent";
-          }
 
           const treeWalker = document.createTreeWalker(displayContainerRef.current!, NodeFilter.SHOW_TEXT);
           let currentNode: Node | null;
@@ -181,7 +177,6 @@ export default function DocxViewer({ arrayBuffer, fields = [], fieldValues = {},
           const lastNodeInfo = affectedNodes[affectedNodes.length - 1];
           const afterText = lastNodeInfo.text.substring(matchEnd - lastNodeInfo.start);
 
-          let injectedNode: Node;
           const span = document.createElement("span");
           span.style.whiteSpace = "pre-wrap";
           span.style.fontFamily = "inherit"; // Fit the majority of the document's font
@@ -195,7 +190,7 @@ export default function DocxViewer({ arrayBuffer, fields = [], fieldValues = {},
           }
 
           span.textContent = displayVal;
-          injectedNode = span;
+          const injectedNode: Node = span;
 
           const parent = firstNode.parentNode;
           if (parent) {

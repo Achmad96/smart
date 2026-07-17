@@ -2,12 +2,17 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { unstable_cache } from "next/cache";
 
-export async function getCategories() {
-  return prisma.category.findMany({
-    orderBy: { label: "asc" },
-  });
-}
+export const getCategories = unstable_cache(
+  async () => {
+    return prisma.category.findMany({
+      orderBy: { label: "asc" },
+    });
+  },
+  ["categories"],
+  { tags: ["categories"] }
+);
 
 export async function createCategory(data: { value: string; label: string; color?: string }) {
   const result = await prisma.category.create({
