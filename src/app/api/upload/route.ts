@@ -5,10 +5,18 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const bucket = formData.get("bucket") as string;
 
     if (!file) {
       return NextResponse.json(
         { error: "No file provided" },
+        { status: 400 }
+      );
+    }
+
+    if (!bucket || (bucket !== "templates" && bucket !== "correspondences")) {
+      return NextResponse.json(
+        { error: "Invalid or missing bucket name" },
         { status: 400 }
       );
     }
@@ -41,9 +49,9 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Supabase Storage bucket named 'uploads'
+    // Upload to Supabase Storage bucket
     const { error } = await supabase.storage
-      .from("uploads")
+      .from(bucket)
       .upload(filename, buffer, {
         contentType: file.type,
         upsert: false,
@@ -56,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     // Get the public URL for the uploaded file
     const { data: publicUrlData } = supabase.storage
-      .from("uploads")
+      .from(bucket)
       .getPublicUrl(filename);
 
     return NextResponse.json({

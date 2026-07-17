@@ -124,6 +124,7 @@ export default function AnalyzeDocumentClient({ categories }: { categories: any[
         // Upload the file to the server for later use as the template base
         const formData = new FormData();
         formData.append("file", selectedFile);
+        formData.append("bucket", "templates");
         const uploadRes = await fetch("/api/upload", { method: "POST", body: formData });
         if (uploadRes.ok) {
           const uploadData = await uploadRes.json();
