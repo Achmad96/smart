@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Select from "@/components/ui/Select";
+import RichTextEditor from "@/components/ui/RichTextEditor";
 import Card from "@/components/ui/Card";
 import { FIELD_TYPES } from "@/lib/constants";
 import type { TemplateField } from "@/types";
@@ -157,7 +158,9 @@ export default function TemplateEditor({ template, categories }: TemplateEditorP
         <p className="text-xs text-slate-500 mb-3">
           Gunakan sintaks {"{{fieldName}}"} untuk placeholder. Contoh: {"{{recipientName}}"}
         </p>
-        <Textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Masukkan konten template dengan {{placeholders}}..." className="min-h-50 font-mono text-xs" />
+        <div className="min-h-[200px]">
+          <RichTextEditor value={content} onChange={setContent} placeholder="Masukkan konten template dengan {{placeholders}}..." />
+        </div>
       </Card>
 
       {error && (

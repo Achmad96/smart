@@ -59,6 +59,10 @@ This project is built with modern web technologies:
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Deployment
+
+The production build generates the Prisma client but does not modify the database. Configure `DATABASE_URL` and `DIRECT_URL` in the deployment environment with valid connection strings for the same database. Initialize or update the database schema separately with `npm run db:push` against the intended database; do not run it as part of the build.
+
 ## License
 
 This project is private and intended for the internal administrative use of Desa Sumbermalang.

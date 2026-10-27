@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getTemplates, getTemplateById } from "@/actions/template.actions";
 import { getCategories } from "@/actions/category.actions";
@@ -85,7 +85,17 @@ export default function NewCorrespondenceForm() {
     }
   }, []);
 
+  const loadedTemplateId = useRef<string | null>(null);
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      if (loadedTemplateId.current === preselectedTemplateId) return;
+    }
+    loadedTemplateId.current = preselectedTemplateId;
+
     async function load() {
       setIsLoadingTemplates(true);
       const [t, cats] = await Promise.all([getTemplates(), getCategories()]);

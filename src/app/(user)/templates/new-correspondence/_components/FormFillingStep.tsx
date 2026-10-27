@@ -156,7 +156,7 @@ export default function FormFillingStep({
                     </div>
                   )}
                   {renderedPreview.includes("<p>") || renderedPreview.includes("<table>") ? (
-                    <div className="text-sm text-gray-900 font-serif leading-relaxed" dangerouslySetInnerHTML={{ __html: renderedPreview }} />
+                    <div className="text-sm text-gray-900 font-serif leading-relaxed prose prose-sm prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: renderedPreview }} />
                   ) : (
                     <pre className="text-sm text-gray-900 whitespace-pre-wrap font-serif leading-relaxed">{renderedPreview}</pre>
                   )}

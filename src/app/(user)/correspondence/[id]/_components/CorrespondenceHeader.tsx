@@ -2,6 +2,7 @@ import Link from "next/link";
 import Badge from "@/components/ui/Badge";
 import { formatDateTime, getCategoryColor } from "@/lib/utils";
 import DownloadDocxButton from "../DownloadDocxButton";
+import DownloadHtmlAsDocxButton from "../DownloadHtmlAsDocxButton";
 
 interface CorrespondenceHeaderProps {
   correspondence: any;
@@ -41,6 +42,9 @@ export default function CorrespondenceHeader({
           Edit
         </Link>
         {isDocxOverlay && <DownloadDocxButton url={correspondence.uploadedFileUrl || headerImageUrl || ""} fields={fields} fieldValues={formattedFieldValues} downloadTitle={correspondence.title} />}
+        {!isDocxOverlay && template?.content !== "PDF_OVERLAY" && correspondence.renderedContent && (
+          <DownloadHtmlAsDocxButton htmlContent={correspondence.renderedContent} downloadTitle={correspondence.title} />
+        )}
       </div>
     </div>
   );

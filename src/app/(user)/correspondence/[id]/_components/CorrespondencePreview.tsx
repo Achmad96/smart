@@ -52,7 +52,7 @@ export default function CorrespondencePreview({
                   )}
 
                   {correspondence.renderedContent?.includes("<p>") || correspondence.renderedContent?.includes("<table>") ? (
-                    <div className="text-sm text-gray-900 font-serif leading-relaxed docx-preview-content" dangerouslySetInnerHTML={{ __html: correspondence.renderedContent || "" }} />
+                    <div className="text-sm text-gray-900 font-serif leading-relaxed docx-preview-content prose prose-sm prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: correspondence.renderedContent || "" }} />
                   ) : (
                     <pre className="text-sm text-gray-900 whitespace-pre-wrap font-serif leading-relaxed">{correspondence.renderedContent || "Tidak ada konten yang dirender tersedia"}</pre>
                   )}
